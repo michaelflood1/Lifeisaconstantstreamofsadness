@@ -226,3 +226,97 @@ CREATE TABLE event_contact (
     FOREIGN KEY (event_contact_frn_contact_id) REFERENCES contact(contact_id)
 );
 
+-- Creating the 'address_type' table
+CREATE TABLE address_type (
+    address_type_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(15) NOT NULL
+);
+
+-- Creating the 'address' table
+CREATE TABLE address (
+    address_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    house_number VARCHAR(45) NOT NULL,
+    street_name VARCHAR(45) NOT NULL,
+    city VARCHAR(45) NOT NULL,
+    province VARCHAR(45) NOT NULL,
+    country VARCHAR(45) NOT NULL,
+    frn_address_type_id INT NOT NULL,
+    FOREIGN KEY (frn_address_type_id) REFERENCES address_type(address_type_id)
+);
+
+-- Creating the 'contact' table
+CREATE TABLE contact (
+    contact_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(45) NOT NULL,
+    last_name VARCHAR(45) DEFAULT NULL,
+    birth_date DATETIME DEFAULT NULL
+);
+
+-- Creating the 'event' table
+CREATE TABLE event (
+    event_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(45) NOT NULL,
+    description VARCHAR(500) DEFAULT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME DEFAULT NULL,
+    frn_host_contact_id INT NOT NULL,
+    frn_address_id INT NOT NULL,
+    FOREIGN KEY (frn_host_contact_id) REFERENCES contact(contact_id),
+    FOREIGN KEY (frn_address_id) REFERENCES address(address_id)
+);
+
+-- Creating the 'event_contact' table
+CREATE TABLE event_contact (
+    event_contact_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    frn_event_id INT NOT NULL,
+    frn_contact_id INT NOT NULL,
+    FOREIGN KEY (frn_event_id) REFERENCES event(event_id),
+    FOREIGN KEY (frn_contact_id) REFERENCES contact(contact_id)
+);
+
+-- Creating the 'contact_address' table
+CREATE TABLE contact_address (
+    contact_address_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    frn_contact_id INT NOT NULL,
+    frn_address_id INT NOT NULL,
+    FOREIGN KEY (frn_contact_id) REFERENCES contact(contact_id),
+    FOREIGN KEY (frn_address_id) REFERENCES address(address_id)
+);
+
+-- Inserting data into 'address_type'
+INSERT INTO address_type (type) VALUES
+('work'),
+('home'),
+('public');
+
+-- Inserting data into 'address'
+INSERT INTO address (house_number, street_name, city, province, country, frn_address_type_id) VALUES
+('741', 'Heather St', 'Richmond', 'BC', 'Canada', 2),
+('10223', 'Shell St', 'Richmond', 'BC', 'Canada', 2),
+('#105 887', ' River Rd', 'Delta', 'BC', 'Canada', 2),
+('6088', 'Main St', 'Burnaby', 'BC', 'Canada', 3);
+
+-- Inserting data into 'contact'
+INSERT INTO contact (first_name, last_name, birth_date) VALUES
+('Joe', 'Sorenson', '1997-05-22 0:00'),
+('Sara', 'Tortia', '1996-01-10 0:00'),
+('Lia', 'Tortia', '1994-08-09 0:00'),
+('Michael', '{Park', '1995-06-23 0:00');
+
+-- Inserting data into 'event'
+INSERT INTO event (title, description, start_time, end_time, frn_host_contact_id, frn_address_id) VALUES
+('Spring Break Kickoff', 'Pool party at the Tortia\'s', '2018-03-15 18:00:00', '2018-03-15 23:50:00', 2, 2);
+
+-- Inserting data into 'event_contact'
+INSERT INTO event_contact (frn_event_id, frn_contact_id) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4);
+
+-- Inserting data into 'contact_address'
+INSERT INTO contact_address (frn_contact_id, frn_address_id) VALUES
+(1, 1),
+(2, 2),
+(3,2),
+(4, 3);
