@@ -1,124 +1,124 @@
 # MySUI notes
 
 
-# Change the MySQL Port (on Windows and Linux)
-# Windows: Modify the my.ini file (usually in C:\ProgramData\MySQL\MySQL Server X.X)
-# Linux: Modify the my.cnf file (usually in /etc/mysql/my.cnf or /etc/my.cnf)
-# Example:
-# [mysqld]
-# port = 3307
-# Restart MySQL to apply changes
+### Change the MySQL Port (on Windows and Linux)
+### Windows: Modify the my.ini file (usually in C:\ProgramData\MySQL\MySQL Server X.X)
+### Linux: Modify the my.cnf file (usually in /etc/mysql/my.cnf or /etc/my.cnf)
+### Example:
+### [mysqld]
+### port = 3307
+### Restart MySQL to apply changes
 
-# Login to MySQL Using a Non-Standard Port
+### Login to MySQL Using a Non-Standard Port
 mysql -u username -p -P 3307 -h localhost
 
-# Create Databases
+### Create Databases
 CREATE DATABASE my_database;
 
-# Create Tables
+### Create Tables
 CREATE TABLE my_table (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100),
     created_at TIMESTAMP
 );
 
-# Insert, Update, and Delete Data
-# Insert Data
+### Insert, Update, and Delete Data
+### Insert Data
 INSERT INTO my_table (name, created_at) VALUES ('John Doe', NOW());
 
-# Update Data
+### Update Data
 UPDATE my_table SET name = 'Jane Doe' WHERE id = 1;
 
-# Delete Data
+### Delete Data
 DELETE FROM my_table WHERE id = 1;
 
-# Create MySQL Users, Roles, and Grant Privileges
-# Create User
+### Create MySQL Users, Roles, and Grant Privileges
+### Create User
 CREATE USER 'new_user'@'localhost' IDENTIFIED BY 'password';
 
-# Grant Privileges
+### Grant Privileges
 GRANT ALL PRIVILEGES ON my_database.* TO 'new_user'@'localhost';
 
-# Create Role
+### Create Role
 CREATE ROLE 'my_role';
 GRANT SELECT ON my_database.* TO 'my_role';
 
-# Assign Role to User
+### Assign Role to User
 GRANT 'my_role' TO 'new_user'@'localhost';
 
-# Troubleshoot Users and Privileges
-# Show User Privileges
+### Troubleshoot Users and Privileges
+### Show User Privileges
 SHOW GRANTS FOR 'username'@'host';
 
-# Fix Susanna's Privileges
+### Fix Susanna's Privileges
 SHOW GRANTS FOR 'susanna'@'localhost';
 GRANT SELECT, INSERT, UPDATE ON my_database.* TO 'susanna'@'localhost';
 
-# Import CSV Data Using LOAD DATA INFILE
+### Import CSV Data Using LOAD DATA INFILE
 LOAD DATA INFILE '/path/to/data.csv'
 INTO TABLE my_table
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-# Check the secure_file_priv variable
+### Check the secure_file_priv variable
 SHOW VARIABLES LIKE 'secure_file_priv';
 
-# Import SQL Formatted Data from mysqldump File
+### Import SQL Formatted Data from mysqldump File
 mysql -u username -p my_database < backup.sql
 
-# Recover from Accidental Data Deletion
-# If using InnoDB, you can attempt to recover from the binary log.
-# Always have regular backups for recovery.
+### Recover from Accidental Data Deletion
+### If using InnoDB, you can attempt to recover from the binary log.
+### Always have regular backups for recovery.
 
-# Reset the MySQL Root Password (on Windows and Linux)
-# Linux:
-# 1. Stop MySQL: sudo systemctl stop mysql
-# 2. Start in safe mode: sudo mysqld_safe --skip-grant-tables &
-# 3. Log in: mysql -u root
-# 4. Change password:
-#    UPDATE mysql.user SET authentication_string = PASSWORD('new_password') WHERE User = 'root';
-#    FLUSH PRIVILEGES;
+### Reset the MySQL Root Password (on Windows and Linux)
+### Linux:
+### 1. Stop MySQL: sudo systemctl stop mysql
+### 2. Start in safe mode: sudo mysqld_safe --skip-grant-tables &
+### 3. Log in: mysql -u root
+### 4. Change password:
+###    UPDATE mysql.user SET authentication_string = PASSWORD('new_password') WHERE User = 'root';
+###    FLUSH PRIVILEGES;
 
-# Windows:
-# 1. Stop MySQL service via Services window.
-# 2. Start MySQL with --skip-grant-tables.
-# 3. Log in and reset the password using the same SQL commands as above.
-# 4. Restart MySQL.
+### Windows:
+### 1. Stop MySQL service via Services window.
+### 2. Start MySQL with --skip-grant-tables.
+### 3. Log in and reset the password using the same SQL commands as above.
+### 4. Restart MySQL.
 
-# InnoDB vs MyISAM Table Storage Engines
-# InnoDB: Supports transactions, foreign keys, and row-level locking (default).
-# MyISAM: Does not support transactions or foreign keys; uses table-level locking.
+### InnoDB vs MyISAM Table Storage Engines
+### InnoDB: Supports transactions, foreign keys, and row-level locking (default).
+### MyISAM: Does not support transactions or foreign keys; uses table-level locking.
 
-# Location of MySQL Configuration Files
-# Windows: C:\ProgramData\MySQL\MySQL Server X.X\my.ini
-# Linux: /etc/mysql/my.cnf, /etc/my.cnf, or /etc/mysql/mysql.conf.d/mysqld.cnf
+### Location of MySQL Configuration Files
+### Windows: C:\ProgramData\MySQL\MySQL Server X.X\my.ini
+### Linux: /etc/mysql/my.cnf, /etc/my.cnf, or /etc/mysql/mysql.conf.d/mysqld.cnf
 
-# Standard Port for MySQL
-# Default MySQL port: 3306
+### Standard Port for MySQL
+### Default MySQL port: 3306
 
-# Setup Users, Roles, and Privileges
-# Example:
-# CREATE USER 'new_user'@'localhost' IDENTIFIED BY 'password';
-# GRANT SELECT, INSERT, UPDATE ON my_database.* TO 'new_user'@'localhost';
-# FLUSH PRIVILEGES;
+### Setup Users, Roles, and Privileges
+### Example:
+### CREATE USER 'new_user'@'localhost' IDENTIFIED BY 'password';
+### GRANT SELECT, INSERT, UPDATE ON my_database.* TO 'new_user'@'localhost';
+### FLUSH PRIVILEGES;
 
-# Cleanup After Resetting the Root Password
-# Ensure that --skip-grant-tables is no longer in use after resetting the password.
-# Restart MySQL to apply changes.
+### Cleanup After Resetting the Root Password
+### Ensure that --skip-grant-tables is no longer in use after resetting the password.
+### Restart MySQL to apply changes.
 
-# secure_file_priv and LOAD DATA INFILE
-# secure_file_priv restricts file loading to certain directories.
+### secure_file_priv and LOAD DATA INFILE
+### secure_file_priv restricts file loading to certain directories.
 SHOW VARIABLES LIKE 'secure_file_priv';
 
-# How to Use LOAD DATA INFILE with Different Line Endings
-# Windows: LINES TERMINATED BY '\r\n'
-# Mac: LINES TERMINATED BY '\r'
-# Linux: LINES TERMINATED BY '\n'
+### How to Use LOAD DATA INFILE with Different Line Endings
+### Windows: LINES TERMINATED BY '\r\n'
+### Mac: LINES TERMINATED BY '\r'
+### Linux: LINES TERMINATED BY '\n'
 
-# Check Line Endings in Files (Linux and Windows)
-# Linux: Use `file filename` to check the line endings.
-# Windows: Open the file in a text editor like Notepad++ to check line endings.
+### Check Line Endings in Files (Linux and Windows)
+### Linux: Use `file filename` to check the line endings.
+### Windows: Open the file in a text editor like Notepad++ to check line endings.
 
 
 
